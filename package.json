@@ -3,17 +3,19 @@
   "version": "1.0.0",
   "description": "Requirements Management System for Rhajaina AI Chat Application using KaibanJS",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "kaiban": "kaiban run",
     "kaiban:deploy": "kaiban deploy",
-    "board": "kaiban run",
-    "dev": "tsx watch src/main.ts",
+    "board": "kaiban run --config kaiban.config.js",
+    "dev": "tsx watch ./kaiban.config.js",
     "build": "tsc",
-    "start": "node dist/main.js",
+    "start": "node dist/kaiban.config.js",
     "requirements": "npm run dev -- --workflow=requirements-analysis",
     "architecture": "npm run dev -- --workflow=architecture-design",
-    "docs": "npm run dev -- --workflow=documentation-generation"
+    "docs": "npm run dev -- --workflow=documentation-generation",
+    "setup": "mkdir -p outputs/{requirements-documents,architecture-diagrams,implementation-specs}"
   },
   "keywords": [
     "ai",

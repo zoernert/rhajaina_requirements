@@ -1,85 +1,133 @@
-import { Agent, Task, Team } from 'kaibanjs';
+import { Team, Task } from 'kaibanjs';
+import { requirementsAnalyst } from './agents/requirements-analyst';
+import { solutionArchitect } from './agents/solution-architect';
+import { technicalWriter } from './agents/technical-writer';
+import { projectManager } from './agents/project-manager';
+import { readFileSync, writeFileSync, ensureDirSync } from 'fs-extra';
+import dotenv from 'dotenv'; 
 
-// Define agents
-const profileAnalyst = new Agent({
-    name: 'Zoe', 
-    role: 'Profile Analyst', 
-    goal: 'Extract structured information from conversational user input.', 
-    background: 'Data Processor',
-    tools: []  // Tools are omitted for now
-});
+dotenv.config();  // Load environment variables from .env file import { join } from 'path';
 
-const resumeWriter = new Agent({
-    name: 'Alex Mercer', 
-    role: 'Resume Writer', 
-    goal: `Craft compelling, well-structured resumes 
-    that effectively showcase job seekers qualifications and achievements.`,
-    background: `Extensive experience in recruiting, 
-    copywriting, and human resources, enabling 
-    effective resume design that stands out to employers.`,
-    tools: []
-});
 
-// Define tasks
-const processingTask = new Task({ 
-  description: `Extract relevant details such as name, 
-  experience, skills, and job history from the user's 'aboutMe' input. 
-  aboutMe: {aboutMe}`,
-  expectedOutput: 'Structured data ready to be used for a resume creation.', 
-  agent: profileAnalyst
-});
+// Initial requirements input
+const initialRequirements = `
+Rhajaina AI Chat Application Requirements:
 
-const resumeCreationTask = new Task({ 
-    description: `Utilize the structured data to create 
-    a detailed and attractive resume. 
-    Enrich the resume content by inferring additional details from the provided information.
-    Include sections such as a personal summary, detailed work experience, skills, and educational background.`,
-    expectedOutput: `A professionally formatted resume in markdown format, 
-    ready for submission to potential employers.`, 
-    agent: resumeWriter 
-});
+1. Core Chat Functionality:
+   - Real-time messaging between users and AI
+   - Support for multiple AI models (OpenAI, Claude, Gemini, Mistral, DeepSeek)
+   - Dynamic context management within LLM token limits
+   - Intelligent chat history summarization
 
-// Create a team
-const team = new Team({
-  name: 'Resume Creation Team',
-  agents: [profileAnalyst, resumeWriter],
-  tasks: [processingTask, resumeCreationTask],
-  inputs: { aboutMe: `My name is David Llaca. 
-    JavaScript Developer for 5 years. 
-    I worked for three years at Disney, 
-    where I developed user interfaces for their primary landing pages
-     using React, NextJS, and Redux. Before Disney, 
-     I was a Junior Front-End Developer at American Airlines, 
-     where I worked with Vue and Tailwind. 
-     I earned a Bachelor of Science in Computer Science from FIU in 2018, 
-     and I completed a JavaScript bootcamp that same year.` },  // Initial input for the first task
-  env: {
-    // You need to set the VITE_OPENAI_API_KEY in the .env file
-    // Or you can hardcode it here locally to try it out
-    OPENAI_API_KEY: import.meta.env.VITE_OPENAI_API_KEY || 'YOUR_OPENAI_API_KEY_HERE'
-    
-    // For Next.js
-    // OPENAI_API_KEY: process.env.NEXT_PUBLIC_OPENAI_API_KEY;
+2. Semantic Search & Vector Store:
+   - Qdrant vector database integration for semantic search
+   - Embedding generation and storage for chat history
+   - Retrieval of relevant context based on semantic similarity
+   - Rich metadata management for filtering and organization
+
+3. Idle Chat Handling:
+   - Detection of user activity and idle states
+   - Automated session summarization when chats become idle
+   - Summary should answer: Where did we leave off? What milestones were achieved?
+   - What are the AI and user roles? What are the next steps?
+   - What information would be helpful for continuation?
+
+4. Agent Workflow System:
+   - Iterative answer generation with multiple processing steps
+   - Tool orchestration for complex queries
+   - Multi-step reasoning and result refinement
+   - Quality validation and improvement loops
+
+5. Architecture Requirements:
+   - Microservices architecture with clear separation of duties
+   - Integration with existing infrastructure (Redis, NATS, Qdrant, MongoDB, n8n)
+   - Docker containerization for deployment
+   - High maintainability and code quality
+   - Scalable and fault-tolerant design
+
+6. Technology Constraints:
+   - Node.js/TypeScript implementation
+   - Moleculer framework for microservices
+   - Mastra framework for AI agent workflows
+   - Integration with existing infrastructure services
+   - Development using VS Code
+   - Deployment on integration servers as Docker containers
+`;
+
+// Create the requirements analysis team
+const requirementsTeam = new Team({
+  name: 'Rhajaina Requirements Team',
+  agents: [
+    requirementsAnalyst,
+    solutionArchitect,
+    technicalWriter,
+    projectManager
+  ],
+  tasks: [
+    new Task({
+      description: 'Analyze and validate the initial requirements for Rhajaina AI Chat Application',
+      agent: requirementsAnalyst,
+      expectedOutput: 'Detailed requirements analysis with validated user stories, priorities, and risk assessment'
+    }),
+    new Task({
+      description: 'Design solution architecture based on validated requirements for Rhajaina',
+      agent: solutionArchitect,
+      expectedOutput: 'Complete solution architecture with service design, technology choices, and implementation strategy'
+    }),
+    new Task({
+      description: 'Create comprehensive technical documentation for Rhajaina implementation',
+      agent: technicalWriter,
+      expectedOutput: 'Technical specifications, API documentation, and implementation guides'
+    }),
+    new Task({
+      description: 'Coordinate project planning and create implementation roadmap for Rhajaina',
+      agent: projectManager,
+      expectedOutput: 'Project plan with priorities, timelines, milestones, and risk mitigation strategies'
+    })
+  ],
+  inputs: {
+    requirements: initialRequirements,
+    constraints: 'Existing infrastructure: Redis, NATS, Qdrant, MongoDB, n8n',
+    context: 'Previous chat application was restarted due to complexity and requirement evolution issues. Rhajaina must be designed to handle evolving requirements systematically.'
   }
 });
 
-export default team;
+// Execute the requirements analysis
+async function runRequirementsAnalysis() {
+  console.log('🚀 Starting Rhajaina AI Chat Application Requirements Analysis...');
+  
+  // Ensure output directories exist
+  ensureDirSync('./outputs/requirements-documents');
+  ensureDirSync('./outputs/architecture-diagrams');
+  ensureDirSync('./outputs/implementation-specs');
+  
+  try {
+    const result = await requirementsTeam.start();
+    
+    // Save results to files
+    writeFileSync(
+      './outputs/rhajaina-requirements-analysis-results.json',
+      JSON.stringify(result, null, 2)
+    );
+    
+    console.log('✅ Requirements analysis completed!');
+    console.log('📁 Results saved to: ./outputs/');
+    console.log('🎯 Next steps: Review outputs and refine requirements as needed');
+    
+    return result;
+  } catch (error) {
+    console.error('❌ Error during requirements analysis:', error);
+    throw error;
+  }
+}
 
-/******************************************************************
- *                                                                  *
- *        🚀 Ready to supercharge your JavaScript AI Agents? 🚀    *
- *                                                                *
- * This is just a starting point, but if you're ready to flex:     *
- *                                                                *
- *   💡 Build a custom UI and control your agents like a boss.     *
- *   🛠️ Equip your agents with tools (APIs, databases—you name it).*
- *   🧠 Integrate different AI models (OpenAI, Anthropic, etc.).   *
- *   🔮 Create setups so advanced, even you'll be impressed.       *
- *                                                                *
- * JavaScript AI Agents are here to stay!                       *
- *                                                                *
- * Head to https://kaibanjs.com                                *
- * 
- * PS: It's way cooler than this basic example. 😎                 *
- *                                                                *
- ******************************************************************/
+// Handle command line arguments
+const workflow = process.argv.find(arg => arg.startsWith('--workflow='))?.split('=')[1];
+
+switch (workflow) {
+  case 'requirements-analysis':
+    runRequirementsAnalysis();
+    break;
+  default:
+    runRequirementsAnalysis();
+}

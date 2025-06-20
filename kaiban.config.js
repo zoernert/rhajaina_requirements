@@ -1,13 +1,12 @@
+// kaiban.config.js
 import { Team, Task } from 'kaibanjs';
-import { requirementsAnalyst } from './agents/requirements-analyst';
-import { solutionArchitect } from './agents/solution-architect';
-import { technicalWriter } from './agents/technical-writer';
-import { projectManager } from './agents/project-manager';
-import { readFileSync, writeFileSync, ensureDirSync } from 'fs-extra';
-import dotenv from 'dotenv'; 
+import { requirementsAnalyst } from './agents/requirements-analyst.js';
+import { solutionArchitect } from './agents/solution-architect.js';
+import { technicalWriter } from './agents/technical-writer.js';
+import { projectManager } from './agents/project-manager.js';
+import dotenv from 'dotenv';
 
-dotenv.config();  // Load environment variables from .env file import { join } from 'path';
-
+dotenv.config();
 
 // Initial requirements input
 const initialRequirements = `
@@ -55,7 +54,7 @@ Rhajaina AI Chat Application Requirements:
 `;
 
 // Create the requirements analysis team
-const requirementsTeam = new Team({
+const team = new Team({
   name: 'Rhajaina Requirements Team',
   agents: [
     requirementsAnalyst,
@@ -89,45 +88,13 @@ const requirementsTeam = new Team({
     requirements: initialRequirements,
     constraints: 'Existing infrastructure: Redis, NATS, Qdrant, MongoDB, n8n',
     context: 'Previous chat application was restarted due to complexity and requirement evolution issues. Rhajaina must be designed to handle evolving requirements systematically.'
+  },
+  env: {
+    GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
+    MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
+    DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY
   }
 });
 
-// Execute the requirements analysis
-async function runRequirementsAnalysis() {
-  console.log('🚀 Starting Rhajaina AI Chat Application Requirements Analysis...');
-  
-  // Ensure output directories exist
-  ensureDirSync('./outputs/requirements-documents');
-  ensureDirSync('./outputs/architecture-diagrams');
-  ensureDirSync('./outputs/implementation-specs');
-  
-  try {
-    const result = await requirementsTeam.start();
-    
-    // Save results to files
-    writeFileSync(
-      './outputs/rhajaina-requirements-analysis-results.json',
-      JSON.stringify(result, null, 2)
-    );
-    
-    console.log('✅ Requirements analysis completed!');
-    console.log('📁 Results saved to: ./outputs/');
-    console.log('🎯 Next steps: Review outputs and refine requirements as needed');
-    
-    return result;
-  } catch (error) {
-    console.error('❌ Error during requirements analysis:', error);
-    throw error;
-  }
-}
-
-// Handle command line arguments
-const workflow = process.argv.find(arg => arg.startsWith('--workflow='))?.split('=')[1];
-
-switch (workflow) {
-  case 'requirements-analysis':
-    runRequirementsAnalysis();
-    break;
-  default:
-    runRequirementsAnalysis();
-}
+export default team;
