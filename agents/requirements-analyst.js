@@ -37,7 +37,7 @@ export const requirementsAnalyst = new Agent({
   `,
   llmConfig: {
     provider: 'google',
-    model: 'gemini-2.0-flash',
+    model: 'gemini-1.5-flash',
     apiKey: process.env.GOOGLE_AI_API_KEY
   },
   tools: [requirementValidator, documentationGenerator],
