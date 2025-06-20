@@ -1,4 +1,6 @@
 import { Agent } from 'kaibanjs';
+import { requirementValidator } from '../tools/requirement-validator.js';
+import { documentationGenerator } from '../tools/documentation-generator.js';
 
 export const requirementsAnalyst = new Agent({
   name: 'Requirements Analyst',
@@ -38,5 +40,6 @@ export const requirementsAnalyst = new Agent({
     model: 'gemini-2.0-flash',
     apiKey: process.env.GOOGLE_AI_API_KEY
   },
-  tools: []
+  tools: [requirementValidator, documentationGenerator],
+  verbose: true
 });

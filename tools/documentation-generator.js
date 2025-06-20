@@ -1,17 +1,21 @@
 import { Tool } from "@langchain/core/tools";
 import { z } from "zod";
-import { writeFileSync, ensureDirSync } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import { join } from 'path';
 
+const { writeFileSync, ensureDirSync } = fsExtra;
+
 export class DocumentationGenerator extends Tool {
-  name = 'documentation-generator';
-  description = 'Generates and saves technical documentation in various formats. Input should be a JSON string with: {"content": "text", "title": "doc title", "type": "requirements|architecture|api|implementation", "format": "markdown|json|html"}';
+  constructor() {
+    super();
+    this.name = 'documentation-generator';
+    this.description = 'Generates and saves technical documentation in various formats. Input should be a JSON string with: {"content": "text", "title": "doc title", "type": "requirements|architecture|api|implementation", "format": "markdown|json|html"}';
+    this.schema = z.object({
+      input: z.string().optional().describe("JSON string containing content, title, type, and format")
+    }).transform((data) => data.input);
+  }
   
-  schema = z.object({
-    input: z.string().optional().describe("JSON string containing content, title, type, and format")
-  }).transform((data) => data.input);
-  
-  async _call(input: string | undefined): Promise<string> {
+  async _call(input) {
     try {
       if (!input) {
         return JSON.stringify({
@@ -64,7 +68,7 @@ export class DocumentationGenerator extends Tool {
     }
   }
   
-  private formatAsMarkdown(content: string, title: string, type: string): string {
+  formatAsMarkdown(content, title, type) {
     return `# ${title}
 
 **Document Type:** ${type.charAt(0).toUpperCase() + type.slice(1)}  
@@ -81,7 +85,7 @@ ${content}
 `;
   }
   
-  private formatAsJson(content: string, title: string, type: string): string {
+  formatAsJson(content, title, type) {
     return JSON.stringify({
       title,
       type,
@@ -94,7 +98,7 @@ ${content}
     }, null, 2);
   }
   
-  private formatAsHtml(content: string, title: string, type: string): string {
+  formatAsHtml(content, title, type) {
     return `<!DOCTYPE html>
 <html>
 <head>

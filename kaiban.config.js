@@ -1,4 +1,3 @@
-// kaiban.config.js
 import { Team, Task } from 'kaibanjs';
 import { requirementsAnalyst } from './agents/requirements-analyst.js';
 import { solutionArchitect } from './agents/solution-architect.js';
@@ -6,6 +5,7 @@ import { technicalWriter } from './agents/technical-writer.js';
 import { projectManager } from './agents/project-manager.js';
 import dotenv from 'dotenv';
 
+// Load environment variables
 dotenv.config();
 
 // Initial requirements input
@@ -64,36 +64,37 @@ const team = new Team({
   ],
   tasks: [
     new Task({
-      description: 'Analyze and validate the initial requirements for Rhajaina AI Chat Application',
+      description: 'Analyze and validate the initial requirements for Rhajaina AI Chat Application. Break down each requirement into specific, testable user stories with clear acceptance criteria, priorities (P0-P3), and complexity estimates.',
       agent: requirementsAnalyst,
-      expectedOutput: 'Detailed requirements analysis with validated user stories, priorities, and risk assessment'
+      expectedOutput: 'Detailed requirements analysis document with validated user stories, priorities, complexity estimates, dependencies, and risk assessments for each requirement.'
     }),
     new Task({
-      description: 'Design solution architecture based on validated requirements for Rhajaina',
+      description: 'Design a comprehensive solution architecture based on the validated requirements for Rhajaina. Focus on microservices design, technology choices, and integration strategies.',
       agent: solutionArchitect,
-      expectedOutput: 'Complete solution architecture with service design, technology choices, and implementation strategy'
+      expectedOutput: 'Complete solution architecture document including service decomposition, technology stack recommendations, API specifications, deployment strategy, and monitoring plans.'
     }),
     new Task({
-      description: 'Create comprehensive technical documentation for Rhajaina implementation',
+      description: 'Create comprehensive technical documentation for Rhajaina implementation based on the requirements analysis and architecture design.',
       agent: technicalWriter,
-      expectedOutput: 'Technical specifications, API documentation, and implementation guides'
+      expectedOutput: 'Technical specifications, API documentation, implementation guides, and developer documentation with clear examples and use cases.'
     }),
     new Task({
-      description: 'Coordinate project planning and create implementation roadmap for Rhajaina',
+      description: 'Coordinate project planning and create an implementation roadmap for Rhajaina based on all previous analyses.',
       agent: projectManager,
-      expectedOutput: 'Project plan with priorities, timelines, milestones, and risk mitigation strategies'
+      expectedOutput: 'Project plan with implementation timeline, resource allocation, milestones, risk mitigation strategies, and quality gates.'
     })
   ],
   inputs: {
     requirements: initialRequirements,
-    constraints: 'Existing infrastructure: Redis, NATS, Qdrant, MongoDB, n8n',
-    context: 'Previous chat application was restarted due to complexity and requirement evolution issues. Rhajaina must be designed to handle evolving requirements systematically.'
+    constraints: 'Existing infrastructure: Redis, NATS, Qdrant, MongoDB, n8n. Must integrate seamlessly with current systems.',
+    context: 'Previous chat application was restarted due to complexity and requirement evolution issues. Rhajaina must be designed to handle evolving requirements systematically and avoid the same pitfalls.'
   },
   env: {
     GOOGLE_AI_API_KEY: process.env.GOOGLE_AI_API_KEY,
     MISTRAL_API_KEY: process.env.MISTRAL_API_KEY,
     DEEPSEEK_API_KEY: process.env.DEEPSEEK_API_KEY,
-    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY
+    ANTHROPIC_API_KEY: process.env.ANTHROPIC_API_KEY,
+    OPENAI_API_KEY: process.env.OPENAI_API_KEY
   }
 });
 

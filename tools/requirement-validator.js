@@ -9,7 +9,7 @@ export class RequirementValidator extends Tool {
     input: z.string().optional().describe("JSON string containing requirement, context, and relatedRequirements")
   }).transform((data) => data.input);
   
-  async _call(input: string | undefined): Promise<string> {
+  async _call(input) {
     try {
       if (!input) {
         return JSON.stringify({
@@ -53,7 +53,7 @@ export class RequirementValidator extends Tool {
     }
   }
   
-  private checkCompleteness(requirement: string): number {
+  checkCompleteness(requirement) {
     // Check if requirement has who, what, why, when, where
     const completenessFactors = [
       /who|user|actor|role/.test(requirement.toLowerCase()),
@@ -66,7 +66,7 @@ export class RequirementValidator extends Tool {
     return completenessFactors.filter(Boolean).length / completenessFactors.length;
   }
   
-  private checkClarity(requirement: string): number {
+  checkClarity(requirement) {
     // Check for ambiguous words and clear language
     const ambiguousWords = ['simple', 'easy', 'fast', 'good', 'nice', 'flexible'];
     const ambiguityCount = ambiguousWords.filter(word => 
@@ -76,7 +76,7 @@ export class RequirementValidator extends Tool {
     return Math.max(0, 1 - (ambiguityCount * 0.2));
   }
   
-  private checkTestability(requirement: string): number {
+  checkTestability(requirement) {
     // Check if requirement can be tested
     const testableIndicators = [
       /should|must|will|shall/.test(requirement.toLowerCase()),
@@ -88,7 +88,7 @@ export class RequirementValidator extends Tool {
     return testableIndicators.filter(Boolean).length / testableIndicators.length;
   }
   
-  private checkFeasibility(requirement: string, context?: string): number {
+  checkFeasibility(requirement, context) {
     // Basic feasibility check - would need more sophisticated analysis
     const complexityIndicators = [
       /real-time|instantaneous|immediate/.test(requirement.toLowerCase()),
@@ -100,11 +100,11 @@ export class RequirementValidator extends Tool {
     return Math.max(0.3, 1 - (infeasibilityScore * 0.3));
   }
   
-  private checkConflicts(requirement: string, related?: string[]): string[] {
+  checkConflicts(requirement, related) {
     if (!related) return [];
     
     // Simple conflict detection - would need more sophisticated analysis
-    const conflicts: string[] = [];
+    const conflicts = [];
     const reqLower = requirement.toLowerCase();
     
     related.forEach((rel, index) => {
@@ -122,10 +122,10 @@ export class RequirementValidator extends Tool {
     return conflicts;
   }
   
-  private identifyDependencies(requirement: string, related?: string[]): string[] {
+  identifyDependencies(requirement, related) {
     if (!related) return [];
     
-    const dependencies: string[] = [];
+    const dependencies = [];
     const reqLower = requirement.toLowerCase();
     
     // Simple dependency detection
@@ -139,7 +139,7 @@ export class RequirementValidator extends Tool {
     return dependencies;
   }
   
-  private calculateScore(results: any): number {
+  calculateScore(results) {
     const weights = {
       completeness: 0.3,
       clarity: 0.2,
@@ -152,8 +152,8 @@ export class RequirementValidator extends Tool {
     }, 0);
   }
   
-  private generateRecommendations(results: any): string[] {
-    const recommendations: string[] = [];
+  generateRecommendations(results) {
+    const recommendations = [];
     
     if (results.completeness < 0.8) {
       recommendations.push('Add more detail about who, what, and why');
