@@ -1,0 +1,41 @@
+{
+  "name": "rhajaina_requirements",
+  "version": "1.0.0",
+  "description": "Requirements Management System for Rhajaina AI Chat Application using KaibanJS",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "kaiban": "kaiban run",
+    "kaiban:deploy": "kaiban deploy",
+    "board": "kaiban run",
+    "dev": "tsx watch src/main.ts",
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "requirements": "npm run dev -- --workflow=requirements-analysis",
+    "architecture": "npm run dev -- --workflow=architecture-design",
+    "docs": "npm run dev -- --workflow=documentation-generation"
+  },
+  "keywords": [
+    "ai",
+    "requirements",
+    "kaibanjs",
+    "rhajaina"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "kaibanjs": "^0.21.1",
+    "@kaibanjs/tools": "^0.7.0",
+    "@langchain/core": "^0.3.60",
+    "fs-extra": "^11.3.0",
+    "marked": "^12.0.0",
+    "mermaid": "^10.9.0",
+    "zod": "^3.25.67"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^24.0.3",
+    "tsx": "^4.20.3",
+    "typescript": "^5.8.3"
+  }
+}
