@@ -4,7 +4,10 @@ import { solutionArchitect } from './agents/solution-architect';
 import { technicalWriter } from './agents/technical-writer';
 import { projectManager } from './agents/project-manager';
 import { readFileSync, writeFileSync, ensureDirSync } from 'fs-extra';
-import { join } from 'path';
+import dotenv from 'dotenv'; 
+
+dotenv.config();  // Load environment variables from .env file import { join } from 'path';
+
 
 // Initial requirements input
 const initialRequirements = `
@@ -12,7 +15,7 @@ Rhajaina AI Chat Application Requirements:
 
 1. Core Chat Functionality:
    - Real-time messaging between users and AI
-   - Support for multiple AI models (OpenAI, Claude, Gemini, Mistral)
+   - Support for multiple AI models (OpenAI, Claude, Gemini, Mistral, DeepSeek)
    - Dynamic context management within LLM token limits
    - Intelligent chat history summarization
 

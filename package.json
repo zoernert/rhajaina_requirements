@@ -24,10 +24,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "kaibanjs": "^0.21.1",
     "@kaibanjs/tools": "^0.7.0",
     "@langchain/core": "^0.3.60",
+    "dotenv": "^16.5.0",
     "fs-extra": "^11.3.0",
+    "kaibanjs": "^0.21.1",
     "marked": "^12.0.0",
     "mermaid": "^10.9.0",
     "zod": "^3.25.67"
