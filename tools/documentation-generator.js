@@ -1,75 +1,84 @@
-import { Tool } from "@langchain/core/tools";
-import { z } from "zod";
-import fsExtra from 'fs-extra';
-import { join } from 'path';
+import fs from 'fs/promises';
+import path from 'path';
 
-const { writeFileSync, ensureDirSync } = fsExtra;
-
-export class DocumentationGenerator extends Tool {
+/**
+ * Documentation Generator Tool for KaibanJS
+ * Saves generated documentation to the outputs directory
+ */
+class DocumentationGeneratorTool {
   constructor() {
-    super();
-    this.name = 'documentation-generator';
-    this.description = 'Generates and saves technical documentation in various formats. Input should be a JSON string with: {"content": "text", "title": "doc title", "type": "requirements|architecture|api|implementation|standards|review|development|design", "format": "markdown|json|html"}';
-    this.schema = z.object({
-      input: z.string().optional().describe("JSON string containing content, title, type, and format")
-    }).transform((data) => data.input);
+    this.name = 'documentationGenerator';
+    this.description = 'Saves generated documentation to the outputs directory with proper formatting and metadata';
+    this.parameters = {
+      type: 'object',
+      properties: {
+        content: {
+          type: 'string',
+          description: 'The markdown content to save'
+        },
+        title: {
+          type: 'string', 
+          description: 'The title of the document'
+        },
+        type: {
+          type: 'string',
+          description: 'The type/category of document (e.g., requirements, technical, design)',
+          default: 'document'
+        },
+        format: {
+          type: 'string',
+          description: 'The format of the document (markdown, txt, etc)',
+          default: 'markdown'
+        }
+      },
+      required: ['content', 'title']
+    };
   }
-  
-  async _call(input) {
+
+  async invoke({ content, title, type = 'document', format = 'markdown' }) {
     try {
-      if (!input) {
-        return JSON.stringify({
-          error: 'No input provided. Expected JSON string with content, title, and type fields.'
-        });
+      console.log(`📝 Documentation generator called with title: "${title}"`);
+      console.log(`📝 Content length: ${content ? content.length : 0} characters`);
+      console.log(`📝 Type: ${type}, Format: ${format}`);
+
+      if (!content || typeof content !== 'string') {
+        throw new Error('Content must be a non-empty string');
       }
-      
-      const params = JSON.parse(input);
-      const { content, title, type, format = 'markdown' } = params;
-      
-      if (!content || !title || !type) {
-        return JSON.stringify({
-          error: 'Missing required fields: content, title, and type are required'
-        });
+
+      if (!title || typeof title !== 'string') {
+        throw new Error('Title must be a non-empty string');
       }
-      
-      // Ensure output directory exists
-      const outputDir = join('./outputs', `${type}-documents`);
-      ensureDirSync(outputDir);
-      
+
+      // Ensure outputs directory exists
+      const outputsDir = './outputs';
+      try {
+        await fs.mkdir(outputsDir, { recursive: true });
+      } catch (mkdirError) {
+        console.log(`📁 Directory ${outputsDir} already exists or created`);
+      }
+
+      // Create subdirectory based on type
+      const typeDir = path.join(outputsDir, `${type}-documents`);
+      try {
+        await fs.mkdir(typeDir, { recursive: true });
+      } catch (mkdirError) {
+        console.log(`📁 Directory ${typeDir} already exists or created`);
+      }
+
       // Generate filename with timestamp
       const timestamp = new Date().toISOString().split('T')[0];
-      const filename = `${title.replace(/\s+/g, '-').toLowerCase()}-${timestamp}.${format}`;
-      const filepath = join(outputDir, filename);
+      const sanitizedTitle = title.toLowerCase()
+        .replace(/[^a-z0-9\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .substring(0, 50);
       
-      // Format content based on type and format
-      let formattedContent = content;
-      
-      if (format === 'markdown') {
-        formattedContent = this.formatAsMarkdown(content, title, type);
-      } else if (format === 'json') {
-        formattedContent = this.formatAsJson(content, title, type);
-      } else if (format === 'html') {
-        formattedContent = this.formatAsHtml(content, title, type);
-      }
-      
-      // Save to file
-      writeFileSync(filepath, formattedContent);
-      
-      return JSON.stringify({
-        success: true,
-        filepath,
-        message: `Documentation saved: ${filename}`
-      });
-    } catch (error) {
-      return JSON.stringify({
-        error: 'Invalid input format. Expected JSON with content, title, type, and optional format fields.',
-        details: error instanceof Error ? error.message : 'Unknown error'
-      });
-    }
-  }
-  
-  formatAsMarkdown(content, title, type) {
-    return `# ${title}
+      const extension = format === 'markdown' ? 'md' : format;
+      const filename = `${sanitizedTitle}-${timestamp}.${extension}`;
+      const filepath = path.join(typeDir, filename);
+
+      // Add document metadata header
+      const documentHeader = `<!-- filepath: ${filepath} -->
+# ${title}
 
 **Document Type:** ${type.charAt(0).toUpperCase() + type.slice(1)}  
 **Generated:** ${new Date().toISOString()}  
@@ -77,56 +86,45 @@ export class DocumentationGenerator extends Tool {
 
 ---
 
-${content}
-
----
-
-*Generated by Rhajaina Requirements Management System*
 `;
-  }
-  
-  formatAsJson(content, title, type) {
-    return JSON.stringify({
-      title,
-      type,
-      generated: new Date().toISOString(),
-      project: "Rhajaina AI Chat Application",
-      content,
-      metadata: {
-        generator: "Rhajaina Requirements Management System"
-      }
-    }, null, 2);
-  }
-  
-  formatAsHtml(content, title, type) {
-    return `<!DOCTYPE html>
-<html>
-<head>
-    <title>${title}</title>
-    <meta charset="UTF-8">
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; }
-        h1 { color: #333; border-bottom: 2px solid #007acc; }
-        .metadata { background: #f5f5f5; padding: 15px; border-radius: 5px; margin: 20px 0; }
-        .content { line-height: 1.6; }
-    </style>
-</head>
-<body>
-    <h1>${title}</h1>
-    <div class="metadata">
-        <strong>Document Type:</strong> ${type}<br>
-        <strong>Generated:</strong> ${new Date().toISOString()}<br>
-        <strong>Project:</strong> Rhajaina AI Chat Application
-    </div>
-    <div class="content">
-        ${content.replace(/\n/g, '<br>')}
-    </div>
-    <hr>
-    <em>Generated by Rhajaina Requirements Management System</em>
-</body>
-</html>`;
+
+      const fullContent = documentHeader + content + '\n\n---\n\n*Generated by Rhajaina Requirements Management System*';
+
+      // Write the file
+      await fs.writeFile(filepath, fullContent, 'utf8');
+      
+      console.log(`✅ Documentation saved to: ${filepath}`);
+      console.log(`📊 File size: ${fullContent.length} characters`);
+
+      return {
+        success: true,
+        filepath: filepath,
+        filename: filename,
+        size: fullContent.length,
+        message: `Document "${title}" saved successfully`
+      };
+
+    } catch (error) {
+      console.error('❌ Documentation generator error:', error);
+      return {
+        success: false,
+        error: error.message,
+        message: `Failed to save document: ${error.message}`
+      };
+    }
   }
 }
 
-// Export an instance for easy use
-export const documentationGenerator = new DocumentationGenerator();
+// Create instance and export both function and class
+const documentationGeneratorInstance = new DocumentationGeneratorTool();
+
+// Legacy function export for backward compatibility
+export async function documentationGenerator(params) {
+  return await documentationGeneratorInstance.invoke(params);
+}
+
+// Export the tool instance for KaibanJS
+export const documentationGeneratorTool = documentationGeneratorInstance;
+
+// Default export
+export default documentationGeneratorInstance;

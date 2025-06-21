@@ -1,6 +1,12 @@
 [
-  "coreChat_ExecutiveSummary",
-  "coreChat_TechnicalRequirements",
-  "coreChat_UserStoriesAndImplementation",
-  "vectorSearch_ArchitectureAndConfig"
+  "completeRequirementsAnalysis",
+  "implementationPlanning",
+  "apiDatabaseDesign",
+  "uxuiDesignSpecs",
+  "qaTestingPlan",
+  "vectorSearchDeepDive",
+  "advancedFeaturesGuide",
+  "enhancedApiSpecs",
+  "securityPerformanceSpecs",
+  "integrationTestingValidation"
 ]
