@@ -9,7 +9,7 @@ export class DocumentationGenerator extends Tool {
   constructor() {
     super();
     this.name = 'documentation-generator';
-    this.description = 'Generates and saves technical documentation in various formats. Input should be a JSON string with: {"content": "text", "title": "doc title", "type": "requirements|architecture|api|implementation", "format": "markdown|json|html"}';
+    this.description = 'Generates and saves technical documentation in various formats. Input should be a JSON string with: {"content": "text", "title": "doc title", "type": "requirements|architecture|api|implementation|standards|review|development|design", "format": "markdown|json|html"}';
     this.schema = z.object({
       input: z.string().optional().describe("JSON string containing content, title, type, and format")
     }).transform((data) => data.input);

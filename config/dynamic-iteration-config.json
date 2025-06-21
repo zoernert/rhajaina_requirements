@@ -1,0 +1,57 @@
+{
+  "iterationStrategy": "adaptive",
+  "convergenceSettings": {
+    "enabled": true,
+    "windowSize": 3,
+    "stabilityThreshold": 0.8,
+    "minCycles": 2,
+    "maxCycles": 8
+  },
+  "completionCriteria": {
+    "requirementsCoverageTarget": 0.95,
+    "outputQualityTarget": 0.85,
+    "taskCompletionTarget": 0.9,
+    "weights": {
+      "coverage": 0.4,
+      "quality": 0.3,
+      "completion": 0.3
+    }
+  },
+  "stoppingConditions": {
+    "hardLimits": {
+      "maxTotalIterations": 100,
+      "maxWorkflowCycles": 8,
+      "maxExecutionTimeMinutes": 30
+    },
+    "convergenceRules": {
+      "outputStabilization": true,
+      "taskGenerationDecrease": true,
+      "qualityPlateau": true
+    },
+    "emergencyStop": {
+      "criticalErrors": true,
+      "resourceExhaustion": true,
+      "infiniteLoopDetection": true
+    }
+  },
+  "adaptiveThresholds": {
+    "simpleRequirements": {
+      "maxCycles": 3,
+      "coverageTarget": 0.9
+    },
+    "complexRequirements": {
+      "maxCycles": 6,
+      "coverageTarget": 0.98
+    },
+    "veryComplexRequirements": {
+      "maxCycles": 8,
+      "coverageTarget": 0.99
+    }
+  },
+  "progressTracking": {
+    "enableDetailedMetrics": true,
+    "trackConvergence": true,
+    "logWorkflowCycles": true,
+    "monitorTaskGeneration": true
+  }
+}
