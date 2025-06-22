@@ -1,4 +1,3 @@
-<!-- filepath: outputs/design-documents/rhajaina-uiux-design-specifications-2025-06-21.md -->
 # Rhajaina UI/UX Design Specifications
 
 **Document Type:** Design  
@@ -28,6 +27,11 @@ The chat interface will be designed with a clean and intuitive layout, prioritiz
 *   **Message Bubbles:** Rounded rectangular containers for messages. User messages aligned to the right, AI messages to the left. Background colors: User - #007AFF (Blue), AI - #F1F0F0 (Light Gray). Text color: #FFFFFF (White) for user messages, #000000 (Black) for AI messages. Font: Roboto, 16px.
 *   **Timestamp:** Small text displayed below each message or group of messages. Font: Roboto, 12px. Color: #8E8E93 (Gray).
 *   **Input Field:** Single-line text input with a placeholder text indicating the expected input. Border: 1px solid #C6C6C8 (Light Gray). Background color: #FFFFFF (White). Font: Roboto, 16px. Send button: Icon of a paper airplane. Color: #007AFF (Blue).
+*   **File Attachments:** An attachment icon (e.g., a paperclip) will be present in the input field area. On click, it will open the native file selector. Uploaded files will be displayed as thumbnails or file-type icons within the message bubble, with progress indicators during upload.
+
+### Themes and Layouts
+*   **Theme Support:** The application will support both light and dark themes. A user preference setting will allow users to choose their preferred theme or set it to sync with their system's settings.
+*   **Customizable Layouts:** Users will have options to adjust the chat interface layout, such as changing font sizes or the density of message display.
 
 ### Navigation and User Flows
 
@@ -42,9 +46,9 @@ The application will feature a simple and intuitive navigation system. The prima
 
 **Detailed User Flow Diagrams:**
 
-*   **New User Onboarding:** Diagram illustrating the steps a new user takes from initial app launch to starting their first chat.
-*   **Existing User Login:** Diagram illustrating the steps an existing user takes to log in and access their chats.
-*   **Chat Creation:** Diagram illustrating the steps a user takes to start a new chat.
+*   **New User Onboarding:** [A diagram should be created to show the flow: User opens app -> Clicks "Sign Up" -> Fills registration form (email, password) -> Submits form -> Receives verification email -> Clicks verification link -> Is redirected to login page -> Logs in for the first time -> Is presented with an optional initial setup screen (e.g., for theme, language) -> Enters the main application.]
+*   **Existing User Login:** [A diagram should be created to show the flow: User opens app -> Enters credentials on the login screen -> Clicks "Login" -> System authenticates -> User is directed to the main chat list view.]
+*   **Chat Creation:** [A diagram should be created to show the flow: From the main chat list view, user clicks "New Chat" button -> A new, empty conversation view opens -> The input field is focused, ready for the user to type their first message.]
 
 ### Responsive Design Specifications
 
@@ -95,7 +99,16 @@ The application will utilize consistent and familiar interaction patterns to enh
 *   **Swipe Gestures:** Using swipe gestures for navigation (e.g., swiping left/right to switch between chats).
 *   **Tap/Click Actions:** Using tap/click actions for selecting items, sending messages, and interacting with UI elements.
 *   **Long Press Actions:** Using long press actions for accessing contextual menus or options.
-*   **Drag and Drop:** Using drag and drop for file attachments (if applicable).
+*   **Drag and Drop:** Using drag and drop for file attachments.
+*   **Multi-Message Selection:** Users can enter a "selection mode" (e.g., via a long press on a message). In this mode, they can tap to select multiple messages. A contextual action bar will appear, offering options like "Copy as Markdown," "Copy to New Chat," or "Delete."
+
+### Advanced Feature Interactions
+
+*   **Semantic Search:** The search bar will have a toggle or a separate button to switch between standard keyword search and semantic search. Results for semantic search will include a similarity score.
+*   **AI Model Switching:** A dropdown menu in the chat header or settings will allow users to select from a list of available AI models. The change will apply to the current or new conversations as specified.
+*   **Finding Similar Conversations:** An option in a conversation's context menu (e.g., a "..." button) will trigger a search for conversations with similar topics, presenting the results in a new view or a sidebar.
+*   **Chat Clustering Visualization:** A dedicated view will display conversations as a visual graph or map. Automatically named clusters will group related chats. Users can click on a cluster or node to navigate to the corresponding conversation(s).
+*   **Tool Usage:** The UI will provide a mechanism for users to select and use tools within a chat. This could be a special prefix (e.g., `/tool-name`) in the input field or a dedicated tool selection menu. Tool outputs will be rendered in a distinct format before being interpreted by the LLM for a final natural language answer.
 
 ### Feedback Mechanisms
 
@@ -196,7 +209,20 @@ The application will be designed as a Progressive Web App (PWA) to provide a nat
 *   **Push Notifications:** Sending push notifications to engage users and provide timely updates.
 *   **Background Sync:** Performing background tasks to keep the application up-to-date.
 
-
 ---
+
+## 5. ANALYTICS DASHBOARD DESIGN
+
+A dedicated analytics dashboard will be available to administrators and users with appropriate permissions to provide insights into application usage, performance, and costs.
+
+### Layout and Components
+*   **Dashboard Layout:** A modular grid-based layout will be used, allowing for the arrangement of various data widgets. It will feature a date range selector to filter the entire dashboard view.
+*   **Key Widgets:**
+    *   **Usage Metrics:** Cards displaying key metrics like total messages, number of active users, and new conversations over the selected period.
+    *   **Conversation Insights:** Charts showing conversation volume over time and average messages per conversation.
+    *   **Model Performance:** A table or chart comparing the usage, response times, and costs associated with different AI models.
+    *   **User Behavior:** Visualizations of user engagement patterns.
+*   **Data Visualization:** Clean and clear charts (e.g., line charts, bar charts, pie charts) will be used to represent data. Tooltips will provide detailed information on hover.
+*   **Export Controls:** An "Export" button will allow users to download the dashboard data in various formats (e.g., CSV, PDF).
 
 *Generated by Rhajaina Requirements Management System*

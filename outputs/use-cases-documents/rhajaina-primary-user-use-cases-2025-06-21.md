@@ -2,7 +2,7 @@
 # Rhajaina Primary User Use Cases
 
 **Document Type:** Use-cases  
-**Generated:** 2025-06-21T19:50:40.901Z  
+**Generated:** 2025-06-21T19:55:36.590Z  
 **Project:** Rhajaina AI Chat Application
 
 ---
@@ -11,185 +11,345 @@
 
 ## 1. AUTHENTICATION & ONBOARDING
 
-### UC-001: User Registration
-
-*   **Title:** User Registration
-*   **Primary Actor:** User
-*   **Goal/Objective:** To create a new user account in the Rhajaina AI Chat Application.
-*   **Preconditions:**
-    *   The user has not yet registered an account.
-    *   The user has access to a valid email address.
+**UC-001: User Registration**
+*   **Title:** Register a new account
+*   **Primary Actor:** New User
+*   **Goal/Objective:** To create a new account and gain access to the application.
+*   **Preconditions:** The user has not yet registered.
 *   **Main Flow:**
-    1.  User navigates to the registration page.
-    2.  User enters required information (e.g., name, email, password).
-    3.  User agrees to terms and conditions.
-    4.  System validates the entered information.
-    5.  System sends a verification email to the user.
-    6.  User clicks the verification link in the email.
-    7.  System verifies the user's email address.
-    8.  User is redirected to the application and logged in.
+    1.  The user navigates to the registration page.
+    2.  The user enters the required information (e.g., email, password, username).
+    3.  The user agrees to the terms and conditions.
+    4.  The user clicks the "Register" button.
+    5.  The system validates the information.
+    6.  The system creates a new account.
+    7.  The system sends a verification email to the user.
+    8.  The user clicks the verification link in the email.
+    9.  The system verifies the user's email address.
+    10. The user is redirected to the login page.
 *   **Alternative Flows:**
-    *   **Email Already in Use:** The system displays an error message and prompts the user to log in or reset their password.
-    *   **Invalid Email Format:** The system displays an error message and prompts the user to correct the email address.
-    *   **Password Requirements Not Met:** The system displays an error message and prompts the user to create a stronger password.
-    *   **Terms and Conditions Not Accepted:** The system prevents the user from proceeding until the terms are accepted.
-    *   **Verification Email Not Received:** The user can request a new verification email.
-    *   **Verification Link Expired:** The system displays an error message and prompts the user to request a new verification email.
-    *   **System Error During Registration:** The system displays a generic error message, and the user is advised to try again later.
-*   **Postconditions:**
-    *   A new user account is created in the system.
-    *   The user is logged in to the application.
+    *   **Invalid Information:** If the user enters invalid information, the system displays an error message and prompts the user to correct the information.
+    *   **Email Already Exists:** If the email address is already registered, the system displays an error message.
+    *   **Verification Failed:** If the verification link is invalid or expired, the system displays an error message and prompts the user to request a new verification email.
+*   **Postconditions:** A new user account is created and verified.
 *   **Business Rules:**
-    *   Email addresses must be unique.
-    *   Passwords must meet minimum complexity requirements.
-    *   Users must agree to the terms and conditions to register.
+    *   The email address must be valid.
+    *   The password must meet the minimum security requirements.
+    *   The username must be unique.
 
-### UC-002: User Login
-
-*   **Title:** User Login
-*   **Primary Actor:** User
-*   **Goal/Objective:** To access the Rhajaina AI Chat Application with valid credentials.
-*   **Preconditions:**
-    *   The user has a registered account.
-    *   The user knows their email address and password.
+**UC-002: User Login**
+*   **Title:** Log in to the application
+*   **Primary Actor:** Registered User
+*   **Goal/Objective:** To access the application with valid credentials.
+*   **Preconditions:** The user has a registered account.
 *   **Main Flow:**
-    1.  User navigates to the login page.
-    2.  User enters their email address and password.
-    3.  User clicks the "Login" button.
-    4.  System authenticates the user's credentials.
-    5.  User is redirected to the main application interface.
+    1.  The user navigates to the login page.
+    2.  The user enters their email address and password.
+    3.  The user clicks the "Login" button.
+    4.  The system validates the credentials.
+    5.  The system authenticates the user.
+    6.  The user is redirected to the main application page.
 *   **Alternative Flows:**
-    *   **Invalid Credentials:** The system displays an error message and prompts the user to re-enter their credentials or reset their password.
-    *   **Account Locked:** If the user enters incorrect credentials multiple times, the account may be locked. The user will need to follow the password reset process.
-    *   **System Error During Login:** The system displays a generic error message, and the user is advised to try again later.
-*   **Postconditions:**
-    *   The user is logged in to the application.
-    *   The user can access their conversations and settings.
+    *   **Invalid Credentials:** If the user enters invalid credentials, the system displays an error message.
+    *   **Account Locked:** If the account is locked due to multiple failed login attempts, the system displays an error message.
+*   **Postconditions:** The user is logged in and can access the application.
 *   **Business Rules:**
-    *   The system must securely authenticate user credentials.
-    *   The system should implement account lockout policies to prevent brute-force attacks.
+    *   The email address and password must match the registered credentials.
 
-### UC-003: User Logout
-*   **Title:** User Logout
-*   **Primary Actor:** User
-*   **Goal/Objective:** To securely log out of the Rhajaina AI Chat Application.
-*   **Preconditions:**
-    *   The user is currently logged in to the application.
+**UC-003: User Logout**
+*   **Title:** Log out of the application
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To securely exit the application.
+*   **Preconditions:** The user is currently logged in.
 *   **Main Flow:**
-    1.  User clicks the "Logout" button.
-    2.  System terminates the user's session.
-    3.  User is redirected to the login page.
-*   **Postconditions:**
-    *   The user is logged out of the application.
-    *   The user's session is terminated.
-*   **Business Rules:**
-    *   The system must securely terminate the user's session.
+    1.  The user clicks the "Logout" button.
+    2.  The system terminates the user's session.
+    3.  The user is redirected to the login page.
+*   **Alternative Flows:** None
+*   **Postconditions:** The user is logged out of the application.
+*   **Business Rules:** None
 
-### UC-004: Password Reset
-*   **Title:** Password Reset
-*   **Primary Actor:** User
+**UC-004: Password Reset**
+*   **Title:** Reset forgotten password
+*   **Primary Actor:** Registered User
 *   **Goal/Objective:** To reset a forgotten password.
-*   **Preconditions:**
-    *   The user has a registered account.
-    *   The user has forgotten their password.
+*   **Preconditions:** The user has forgotten their password.
 *   **Main Flow:**
-    1.  User clicks the "Forgot Password" link on the login page.
-    2.  User enters their email address.
-    3.  System sends a password reset email to the user.
-    4.  User clicks the password reset link in the email.
-    5.  User is redirected to a password reset page.
-    6.  User enters a new password and confirms it.
-    7.  System validates the new password.
-    8.  System updates the user's password.
-    9.  User is redirected to the login page.
+    1.  The user navigates to the password reset page.
+    2.  The user enters their email address.
+    3.  The user clicks the "Reset Password" button.
+    4.  The system sends a password reset email to the user.
+    5.  The user clicks the password reset link in the email.
+    6.  The user is redirected to the password reset form.
+    7.  The user enters a new password and confirms it.
+    8.  The user clicks the "Submit" button.
+    9.  The system validates the new password.
+    10. The system updates the user's password.
+    11. The user is redirected to the login page.
 *   **Alternative Flows:**
-    *   **Invalid Email Address:** The system displays an error message.
-    *   **Password Reset Link Expired:** The system displays an error message, and the user is prompted to request a new password reset email.
-    *   **Password Requirements Not Met:** The system displays an error message and prompts the user to create a stronger password.
-*   **Postconditions:**
-    *   The user's password is reset.
-    *   The user can log in with their new password.
+    *   **Invalid Email:** If the user enters an invalid email address, the system displays an error message.
+    *   **Invalid Reset Link:** If the reset link is invalid or expired, the system displays an error message.
+    *   **Password Mismatch:** If the new password and confirmation do not match, the system displays an error message.
+*   **Postconditions:** The user's password is reset.
 *   **Business Rules:**
-    *   The system must securely handle password reset requests.
-    *   Password reset links should expire after a certain period.
+    *   The email address must be registered.
+    *   The new password must meet the minimum security requirements.
 
-### UC-005: Profile Creation and Management
-*   **Title:** Profile Creation and Management
-*   **Primary Actor:** User
-*   **Goal/Objective:** To create and manage user profile information.
-*   **Preconditions:**
-    *   The user has a registered account and is logged in.
+**UC-005: Profile Creation and Management**
+*   **Title:** Create and manage user profile
+*   **Primary Actor:** Registered User
+*   **Goal/Objective:** To create and manage their user profile information.
+*   **Preconditions:** The user is logged in.
 *   **Main Flow:**
-    1.  User navigates to the profile settings page.
-    2.  User enters or updates their profile information (e.g., name, profile picture).
-    3.  User saves the changes.
-    4.  System validates the entered information.
-    5.  System updates the user's profile.
+    1.  The user navigates to the profile page.
+    2.  The user enters or modifies their profile information (e.g., name, profile picture, preferences).
+    3.  The user clicks the "Save" button.
+    4.  The system validates the information.
+    5.  The system updates the user's profile.
 *   **Alternative Flows:**
-    *   **Invalid Data Format:** The system displays an error message if the user enters data in an invalid format.
-    *   **System Error During Profile Update:** The system displays a generic error message, and the user is advised to try again later.
-*   **Postconditions:**
-    *   The user's profile information is updated.
+    *   **Invalid Information:** If the user enters invalid information, the system displays an error message.
+*   **Postconditions:** The user's profile is created or updated.
 *   **Business Rules:**
-    *   The system must validate user input to ensure data integrity.
+    *   Certain fields may be required.
+    *   Data formats may be enforced.
+
+**UC-006: Initial System Setup and Preferences**
+*   **Title:** Configure initial system settings
+*   **Primary Actor:** New User (first login)
+*   **Goal/Objective:** To set up initial system preferences upon first login.
+*   **Preconditions:** The user is logging in for the first time after registration.
+*   **Main Flow:**
+    1.  The user is presented with a setup wizard or preferences screen.
+    2.  The user selects their preferred language, theme, and other initial settings.
+    3.  The user saves the settings.
+*   **Alternative Flows:**
+    *   **Skip Setup:** The user may choose to skip the initial setup and configure settings later.
+*   **Postconditions:** The system is configured with the user's initial preferences.
+*   **Business Rules:**
+    *   Default settings are applied if the user skips the setup.
 
 ## 2. CORE CHAT FUNCTIONALITY
 
-### UC-006: Start New Conversation
-*   **Title:** Start New Conversation
-*   **Primary Actor:** User
-*   **Goal/Objective:** To initiate a new conversation with an AI model.
-*   **Preconditions:**
-    *   The user is logged in.
+**UC-007: Start New Conversation**
+*   **Title:** Initiate a new chat conversation
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To start a new conversation with the AI model.
+*   **Preconditions:** The user is logged in.
 *   **Main Flow:**
-    1.  User clicks the "New Conversation" button.
-    2.  User selects an AI model to chat with.
-    3.  A new chat session is created.
-    4.  The user is presented with an empty chat window.
-*   **Postconditions:**
-    *   A new chat session is created and ready for messaging.
+    1.  The user clicks the "New Conversation" button.
+    2.  The system opens a new chat window.
+    3.  The user enters their initial message.
+    4.  The user sends the message.
+*   **Alternative Flows:** None
+*   **Postconditions:** A new conversation is started.
+*   **Business Rules:** None
 
-### UC-007: Send Message
-*   **Title:** Send Message
-*   **Primary Actor:** User
-*   **Goal/Objective:** To send a message to the AI model in the current conversation.
-*   **Preconditions:**
-    *   The user is in an active chat session.
+**UC-008: Send Message**
+*   **Title:** Send a message in a conversation
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To send a message to the AI model in an existing conversation.
+*   **Preconditions:** The user is logged in and has an active conversation.
 *   **Main Flow:**
-    1.  User enters a message in the text input field.
-    2.  User clicks the "Send" button.
-    3.  The message is sent to the AI model.
-*   **Postconditions:**
-    *   The message is displayed in the chat window.
+    1.  The user enters their message in the message input field.
+    2.  The user clicks the "Send" button or presses Enter.
+    3.  The system sends the message to the AI model.
+*   **Alternative Flows:**
+    *   **Empty Message:** If the user tries to send an empty message, the system displays an error message.
+*   **Postconditions:** The message is sent to the AI model.
+*   **Business Rules:** None
 
-### UC-008: Receive Message
-*   **Title:** Receive Message
+**UC-009: Receive Message**
+*   **Title:** Receive a message from the AI model
 *   **Primary Actor:** System (AI Model)
-*   **Goal/Objective:** To receive and display a message from the AI model.
-*   **Preconditions:**
-    *   The user is in an active chat session.
-    *   The AI model has generated a response.
+*   **Goal/Objective:** To display the AI model's response to the user.
+*   **Preconditions:** The user has sent a message to the AI model.
 *   **Main Flow:**
-    1.  The AI model sends a response to the user.
-    2.  The system receives the response.
-    3.  The response is displayed in the chat window.
-*   **Postconditions:**
-    *   The AI model's response is displayed in the chat window.
+    1.  The AI model processes the user's message.
+    2.  The AI model generates a response.
+    3.  The system displays the AI model's response in the chat window.
+*   **Alternative Flows:**
+    *   **Error Response:** If the AI model encounters an error, the system displays an error message.
+*   **Postconditions:** The AI model's response is displayed to the user.
+*   **Business Rules:** None
+
+**UC-010: Message Formatting and Rich Content**
+*   **Title:** Format messages with rich content
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To format messages using rich text and include media.
+*   **Preconditions:** The user is logged in and has an active conversation.
+*   **Main Flow:**
+    1.  The user uses the formatting tools (e.g., bold, italics, lists) or inserts media (e.g., images, links) into the message input field.
+    2.  The user sends the message.
+    3.  The system renders the formatted message in the chat window.
+*   **Alternative Flows:**
+    *   **Unsupported Format:** If the user uses an unsupported format, the system displays an error message or ignores the formatting.
+*   **Postconditions:** The formatted message is displayed in the chat window.
+*   **Business Rules:**
+    *   Supported formatting options are defined.
+
+**UC-011: Chat History Browsing**
+*   **Title:** Browse chat history
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To view previous messages in a conversation.
+*   **Preconditions:** The user is logged in and has an existing conversation history.
+*   **Main Flow:**
+    1.  The user scrolls up in the chat window.
+    2.  The system loads and displays older messages.
+*   **Alternative Flows:**
+    *   **No More Messages:** If there are no more messages to load, the system indicates that the end of the history has been reached.
+*   **Postconditions:** The user can view the chat history.
+*   **Business Rules:**
+    *   The number of messages loaded per scroll may be limited.
+
+**UC-012: Message Search and Filtering**
+*   **Title:** Search and filter messages
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To find specific messages within a conversation.
+*   **Preconditions:** The user is logged in and has an existing conversation history.
+*   **Main Flow:**
+    1.  The user enters a search term in the search bar.
+    2.  The user applies filters (e.g., date range, sender).
+    3.  The system displays the messages that match the search criteria.
+*   **Alternative Flows:**
+    *   **No Results:** If no messages match the search criteria, the system displays a message indicating that no results were found.
+*   **Postconditions:** The user can view the search results.
+*   **Business Rules:**
+    *   Search functionality is implemented.
+
+**UC-013: Chat Session Management**
+*   **Title:** Manage chat sessions (save, load, delete)
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To manage chat sessions for later access.
+*   **Preconditions:** The user is logged in and has active or saved chat sessions.
+*   **Main Flow:**
+    1.  The user can save the current chat session.
+    2.  The user can load a previously saved chat session.
+    3.  The user can delete a saved chat session.
+*   **Alternative Flows:**
+    *   **Save Failed:** If saving fails, the system displays an error message.
+    *   **Load Failed:** If loading fails (e.g., corrupted data), the system displays an error message.
+*   **Postconditions:** Chat sessions are managed (saved, loaded, or deleted).
+*   **Business Rules:**
+    *   Storage limits for saved sessions may apply.
+
+**UC-014: Context Switching Between Conversations**
+*   **Title:** Switch between multiple conversations
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To easily switch between different active conversations.
+*   **Preconditions:** The user is logged in and has multiple active conversations.
+*   **Main Flow:**
+    1.  The user selects a conversation from the list of active conversations.
+    2.  The system displays the selected conversation.
+*   **Alternative Flows:** None
+*   **Postconditions:** The user is viewing the selected conversation.
+*   **Business Rules:**
+    *   A list of active conversations is maintained.
+
+**UC-015: Message Editing and Deletion**
+*   **Title:** Edit or delete sent messages
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To correct or remove previously sent messages.
+*   **Preconditions:** The user is logged in and has sent messages in a conversation.
+*   **Main Flow:**
+    1.  The user selects a message they sent.
+    2.  The user chooses to edit or delete the message.
+    3.  If editing, the user modifies the message and saves the changes.
+    4.  If deleting, the user confirms the deletion.
+*   **Alternative Flows:**
+    *   **Edit/Delete Not Allowed:** The system may prevent editing or deleting messages after a certain time.
+*   **Postconditions:** The message is either edited or deleted.
+*   **Business Rules:**
+    *   Time limits for editing/deleting messages may apply.
 
 ## 3. AI MODEL INTERACTIONS
 
-### UC-009: Model Selection
-*   **Title:** Model Selection
-*   **Primary Actor:** User
-*   **Goal/Objective:** To select a specific AI model for a conversation.
-*   **Preconditions:**
-    *   The user is logged in.
+**UC-016: Model Selection and Switching**
+*   **Title:** Select and switch between different AI models
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To choose the AI model used for the conversation.
+*   **Preconditions:** The user is logged in and the system supports multiple AI models.
 *   **Main Flow:**
-    1.  User navigates to the model selection screen.
-    2.  User browses the available AI models.
-    3.  User selects an AI model.
-*   **Postconditions:**
-    *   The selected AI model is associated with the new or current conversation.
+    1.  The user navigates to the model selection settings.
+    2.  The user selects an AI model from the available options.
+    3.  The system switches to the selected AI model.
+*   **Alternative Flows:**
+    *   **Model Not Available:** If the selected model is not available, the system displays an error message.
+*   **Postconditions:** The selected AI model is active for the conversation.
+*   **Business Rules:**
+    *   A list of available AI models is maintained.
+
+**UC-017: Context-Aware Conversations**
+*   **Title:** Engage in context-aware conversations
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To have the AI model remember and use previous messages in the conversation to provide relevant responses.
+*   **Preconditions:** The user is logged in and has an active conversation.
+*   **Main Flow:**
+    1.  The user sends a series of messages to the AI model.
+    2.  The AI model uses the context of the previous messages to generate responses.
+*   **Alternative Flows:**
+    *   **Context Loss:** If the conversation is too long or the context is too complex, the AI model may lose context.
+*   **Postconditions:** The AI model's responses are context-aware.
+*   **Business Rules:**
+    *   The AI model's context window is defined.
+
+**UC-018: Multi-Turn Dialogue Management**
+*   **Title:** Engage in multi-turn dialogues
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To have the AI model maintain the state of the conversation across multiple turns.
+*   **Preconditions:** The user is logged in and has an active conversation.
+*   **Main Flow:**
+    1.  The user asks a question that requires multiple turns to answer.
+    2.  The AI model asks clarifying questions or provides partial answers.
+    3.  The user responds to the AI model's questions.
+    4.  The AI model continues the dialogue until the question is answered.
+*   **Alternative Flows:**
+    *   **Dialogue Timeout:** If the dialogue takes too long, the AI model may time out.
+*   **Postconditions:** The AI model maintains the state of the conversation.
+*   **Business Rules:**
+    *   The AI model's dialogue management capabilities are defined.
+
+**UC-019: AI Response Customization**
+*   **Title:** Customize AI response parameters (e.g., length, tone)
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To adjust the AI model's response based on user preferences.
+*   **Preconditions:** The user is logged in and the system allows customization of AI responses.
+*   **Main Flow:**
+    1.  The user navigates to the AI response customization settings.
+    2.  The user adjusts the parameters (e.g., length, tone, style).
+    3.  The system applies the changes to the AI model's responses.
+*   **Alternative Flows:**
+    *   **Invalid Parameters:** If the user enters invalid parameters, the system displays an error message.
+*   **Postconditions:** The AI model's responses are customized based on the user's preferences.
+*   **Business Rules:**
+    *   Customizable parameters are defined.
+
+**UC-020: Model Performance Feedback**
+*   **Title:** Provide feedback on AI model performance
+*   **Primary Actor:** Logged-in User
+*   **Goal/Objective:** To provide feedback to improve the AI model's performance.
+*   **Preconditions:** The user is logged in and has interacted with the AI model.
+*   **Main Flow:**
+    1.  The user rates the AI model's response (e.g., thumbs up/down).
+    2.  The user provides additional feedback (e.g., comments).
+    3.  The system collects the feedback and uses it to improve the AI model.
+*   **Alternative Flows:** None
+*   **Postconditions:** The user's feedback is collected.
+*   **Business Rules:**
+    *   Feedback mechanisms are implemented.
+
+**UC-021: Fallback Handling Scenarios**
+*   **Title:** Handle fallback scenarios when the AI model fails
+*   **Primary Actor:** System
+*   **Goal/Objective:** To gracefully handle situations where the AI model cannot provide a satisfactory response.
+*   **Preconditions:** The AI model is unable to generate a response or encounters an error.
+*   **Main Flow:**
+    1.  The AI model fails to generate a response.
+    2.  The system displays a fallback message (e.g., "I'm sorry, I don't understand.").
+    3.  The system may suggest alternative actions (e.g., rephrasing the question, selecting a different model).
+*   **Alternative Flows:** None
+*   **Postconditions:** The user is informed that the AI model could not provide a response.
+*   **Business Rules:**
+    *   Fallback messages are defined.
 
 
 ---
